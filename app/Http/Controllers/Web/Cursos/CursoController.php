@@ -15,18 +15,21 @@ class CursoController extends Controller
 
         if ($response->successful()) {
             $cursos = $response->json();
+            if (!isset($cursos["message"])) {
+                $cursos = array_filter($cursos["cursos"], function ($curso) {
+                    $fechaInicio = new \DateTime($curso['fecha_inicio']);
+                    $fechaLimite = new \DateTime('-6 months');
+                    return $fechaInicio >= $fechaLimite;
+                });
 
-            $cursos = array_filter($cursos["cursos"], function ($curso) {
-                $fechaInicio = new \DateTime($curso['fecha_inicio']);
-                $fechaLimite = new \DateTime('-6 months');
-                return $fechaInicio >= $fechaLimite;
-            });
+                usort($cursos, function ($a, $b) {
+                    return count($b['estudiante']) - count($a['estudiante']);
+                });
 
-            usort($cursos, function ($a, $b) {
-                return count($b['estudiante']) - count($a['estudiante']);
-            });
-
-            $topCursos = $cursos;
+                $topCursos = $cursos;
+            } else {
+                $topCursos = [];
+            }
         } else {
             $topCursos = [];
         }

@@ -173,4 +173,8 @@
             </div>
         </div>
     </body>
+
+    <script>
+        window,location.href ="{{ env('APP_URL') }}/cursos";
+    </script>
 </html>

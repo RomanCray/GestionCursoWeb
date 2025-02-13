@@ -18,22 +18,29 @@
 
             <label for="correo_electronico">Correo Electrónico:</label>
             <input class="form-control" type="email" id="correo_electronico" name="correo_electronico" required><br>
+            @if (count($cursosDisponibles))
 
-            <label>Selecciona al menos un curso:</label>
-            <div class="row">
-                @foreach ($cursosDisponibles['cursos'] as $curso)
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="form-check">
-                            <input class="form-check-input curso-checkbox" type="checkbox" id="curso_{{ $curso['id'] }}"
-                                name="cursos[]" value="{{ $curso['id'] }}">
-                            <label class="form-check-label" for="curso_{{ $curso['id'] }}">{{ $curso['nombre'] }}</label>
+                <label>Selecciona al menos un curso:</label>
+                <div class="row">
+                    @dd($cursosDisponibles)
+
+                    @foreach ($cursosDisponibles['cursos'] as $curso)
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="form-check">
+                                <input class="form-check-input curso-checkbox" type="checkbox"
+                                    id="curso_{{ $curso['id'] }}" name="cursos[]" value="{{ $curso['id'] }}">
+                                <label class="form-check-label"
+                                    for="curso_{{ $curso['id'] }}">{{ $curso['nombre'] }}</label>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-            <br>
+                    @endforeach
+                </div>
+                <br>
 
-            <button type="button" class="btn btn-outline-success" id="guardarEstudianteBtn">Crear Estudiante</button>
+                <button type="button" class="btn btn-outline-success" id="guardarEstudianteBtn">Crear Estudiante</button>
+            @else
+                <div class="alert alert-warning">No hay cursos disponibles. Primero cree algun curso</div>
+            @endif
         </form>
 
         <script>
@@ -78,6 +85,7 @@
                             });
                         },
                         error: function(error) {
+                            console.log(error);
                             Swal.fire({
                                 title: 'Error',
                                 text: 'Hubo un problema al crear el estudiante.',
@@ -168,7 +176,8 @@
                                 }
                             });
                         },
-                        error: function(error) {
+                        error: function(er) {
+                            console.log(er);
                             Swal.fire({
                                 title: 'Error',
                                 text: 'Hubo un problema al actualizar el estudiante.',

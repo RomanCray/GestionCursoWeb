@@ -14,7 +14,11 @@ class EstudianteController extends Controller
         $response = Http::get('' . env('API_DOMAIN') . '/api/estudiante/get-all-students');
 
         if ($response->successful()) {
-            $estudiantes = $response->json();
+            if (!isset($response->json()["message"])) {
+                $estudiantes = $response->json();
+            } else {
+                $estudiantes = [];
+            }
         } else {
             $estudiantes = [];
         }
@@ -61,8 +65,11 @@ class EstudianteController extends Controller
 
         $responseCursos = Http::get(env('API_DOMAIN') . '/api/cursos/get-all-courses');
         if ($responseCursos->successful()) {
-            // dd($responseCursos->json());
-            $cursosDisponibles = $responseCursos->json();
+            if (!isset($responseCursos->json()["message"])) {
+                $cursosDisponibles = $responseCursos->json();
+            } else {
+                $cursosDisponibles = [];
+            }
         }
 
         if ($id != 0) {
