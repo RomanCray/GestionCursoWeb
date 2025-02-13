@@ -22,7 +22,6 @@
 
                 <label>Selecciona al menos un curso:</label>
                 <div class="row">
-                    @dd($cursosDisponibles)
 
                     @foreach ($cursosDisponibles['cursos'] as $curso)
                         <div class="col-md-4 col-sm-6 col-12">
@@ -67,6 +66,9 @@
                         cursos: cursosSeleccionados
                     };
 
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+
                     $.ajax({
                         url: ' {{ env('API_DOMAIN') }}/api/estudiante/create-student',
                         type: 'POST',
@@ -85,7 +87,14 @@
                             });
                         },
                         error: function(error) {
-                            console.log(error);
+                            console.log(error.responseJSON);
+                            console.log(responseJSON.errors);
+                            var errorMessage = 'Hubo un problema al actualizar el curso.';
+                            if (error.responseJSON && error.responseJSON.errors) {
+                                errorMessage = Object.values(error.responseJSON.errors).flat().join(
+                                    ', ');
+                            }
+                            console.log(errorMessage);
                             Swal.fire({
                                 title: 'Error',
                                 text: 'Hubo un problema al crear el estudiante.',
@@ -159,6 +168,9 @@
                         cursos: cursosSeleccionados
                     };
 
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+
                     $.ajax({
                         url: ' {{ env('API_DOMAIN') }}/api/estudiante/update-student?id={{ $estudiante[0]['id'] }}',
                         type: 'PUT',
@@ -176,8 +188,15 @@
                                 }
                             });
                         },
-                        error: function(er) {
-                            console.log(er);
+                        error: function(error) {
+                            console.log(error.responseJSON);
+                            console.log(responseJSON.errors);
+                            var errorMessage = 'Hubo un problema al actualizar el curso.';
+                            if (error.responseJSON && error.responseJSON.errors) {
+                                errorMessage = Object.values(error.responseJSON.errors).flat().join(
+                                    ', ');
+                            }
+                            console.log(errorMessage);
                             Swal.fire({
                                 title: 'Error',
                                 text: 'Hubo un problema al actualizar el estudiante.',
