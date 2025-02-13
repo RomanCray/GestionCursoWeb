@@ -58,6 +58,7 @@ Este es un proyecto web desarrollado con Laravel y Blade que consume la API de e
 ## Notas
 
 -   Este proyecto solo consume la API y no almacena datos localmente.
+-   La app es totalmente depediente del API sin este no tendra ningun funcionamineto esta echo de esta manera pora mostrar la dependecia de la API
 -   Para cualquier problema de conexión, verificar que `API_DOMAIN` esté correctamente configurado en `.env`.
 
 ¡Listo para usar! 🎉
